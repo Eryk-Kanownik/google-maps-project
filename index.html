@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAPS</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="wrapper">
+        <div id="map"></div>
+        <div id="info">
+            <div class="right">
+                <div class="grid">
+                    <input type="text" id="searchBox" placeholder="Find place...">
+                    <button id="searchBtn">Search</button>
+                </div>
+                <div class="list">
+                    <div class="list-elem">
+                        <div class="header">
+                            <h2>Header</h2>
+                        </div>
+                        <div class="content">
+                            Content
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIVVTgIicvCLvBhVEePEnU-23vDtrStSg&callback=initMap&libraries=places"></script>
+    
+    <script src="script.js"></script>
+</body>
+</html>
