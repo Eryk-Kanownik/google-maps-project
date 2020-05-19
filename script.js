@@ -17,6 +17,8 @@ function initMap(){
     let info = new google.maps.InfoWindow({content:addDescription});
     marker.addListener('click',() => {
       info.open(map,marker)
+      map.panTo(cords)
+      map.setZoom(9)
     })
     marker.addListener('dblclick',() => {
       marker.setMap(null)
@@ -27,16 +29,52 @@ function initMap(){
 
   var searchBtn = document.getElementById('searchBtn')
   
+  function templateString({name,formatted_address,rating,geometry}){
+    var list = document.querySelector('.list')
+    return list.innerHTML +=`<div class="list-elem">
+    <div class="header">
+        <h2>${name}</h2>
+    </div>
+    <div class="content">
+        <p>Address: ${formatted_address}</p>
+        <p>Rating: ${rating}</p>
+        <p>Latitude: ${geometry.location.lat()}</p>
+        <p>Longtitude: ${geometry.location.lng()}</p>
+    </div>
+</div>`
+  }
+
+  function addMarkerForTextSearch(elem){
+    let marker = new google.maps.Marker({position:{
+      lng:elem.geometry.location.lng(),
+      lat:elem.geometry.location.lat()
+    },map});
+    let info = new google.maps.InfoWindow({content:elem.formatted_address})
+    marker.addListener('click',() => {
+      info.open(map,marker)
+      map.panTo({
+        lng:elem.geometry.location.lng(),
+        lat:elem.geometry.location.lat()
+      })
+      map.setZoom(9)
+    })
+    marker.addListener('dblclick',() => {
+      marker.setMap(null)
+    })
+  }
+  
   searchBtn.addEventListener('click',() => {
+    
+    var list = document.querySelector('.list')
+    list.innerHTML = ""
     var searchBoxVal = document.getElementById('searchBox').value;
     var request = {
          query:searchBoxVal,
       }
     service.textSearch(request, function(results, status) {
       if (status === google.maps.places.PlacesServiceStatus.OK) {
-        for (var i = 0; i < results.length; i++) {
-          console.log(results[i])
-        }
+        results.map(elem => templateString(elem))
+        results.map(elem => addMarkerForTextSearch(elem))
       }
     });
   }
